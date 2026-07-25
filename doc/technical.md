@@ -22,7 +22,8 @@
 
 身份解析顺序为 URL 调试参数、Aigram 当前用户资料接口
 `/note/telegram/user/get/info/by/telegram_id`、平台外 `AlterU` 品牌文字；平台内
-`user_name` 为必需字段，头像缺失时只回退图片。头像网络加载
+`data.name` 为资料接口的必需字段，`data.user_name` 仅作旧数据兼容；
+`data.head_url` 缺失时只回退图片。头像网络加载
 失败也会二次降级。渲染器使用一个全屏 `TRIANGLE_STRIP`，每帧只更新时间、触点
 位置和触点强度。Pointer Events 维护按下、拖动、松手，松手后的强度插值同时驱动
 水面回落和结算条件。页面隐藏时停止 RAF，恢复可见时重启。界面文字根据
