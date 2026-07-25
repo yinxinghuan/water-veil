@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  
+
+    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+
+    <link rel="icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+
+    <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111" />
+
+
+
+  <meta charset="utf-8">
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+
+  <title>Lightweight Water Distortion Effect</title>
+
+  <link rel="stylesheet" href="https://cpwebassets.codepen.io/assets/fullpage/fullpage-defe0b00ddddc98ad4bc2c428e9d6182cd7742e2624f558656dbfb986d4ba13c.css" />
+  
+
+    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
+
+    <meta name="apple-mobile-web-app-title" content="CodePen">
+
+    <link rel="icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+
+    <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111" />
+
+
+
+
+
+  <title>Lightweight Water Distortion Effect</title>
+
+  <style>
+    html { font-size: 15px; }
+    html, body { margin: 0; padding: 0; min-height: 100%; }
+    body { height:100%; display: flex; flex-direction: column; }
+    .referer-warning {
+      background: black;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      padding: 0.75em;
+      color: white;
+      text-align: center;
+      font-family: 'Lato', 'Lucida Grande', 'Lucida Sans Unicode', Tahoma, system-ui, Sans-Serif;
+      line-height: 1.2;
+      font-size: 1rem;
+      position: relative;
+      z-index: 2;
+    }
+    .referer-warning span { font-family: initial; }
+    .referer-warning h1 { font-size: 1.2rem; margin: 0; }
+    .referer-warning a { color: #56bcf9; }
+  </style>
+</head>
+
+<body class="">
+  <div class="referer-warning">
+    <h1><span>⚠️</span> Do not enter passwords or personal information on this page. <span>⚠️</span></h1>
+      This is a code demo posted by a web developer on <a href="https://codepen.io">CodePen</a>.
+    <br />
+    A referer from CodePen is required to render this page view, and your browser is not sending one (<a href="https://blog.codepen.io/2017/10/05/regarding-referer-headers/" target="_blank" rel="noreferrer noopener">more details</a>).</h1>
+  </div>
+
+  <div id="result-iframe-wrap" role="main">
+    <iframe
+      id="result"
+      srcdoc="<!DOCTYPE html>
+<html lang=&quot;en&quot; >
+
+<head>
+  <meta charset=&quot;UTF-8&quot;>
+  
+
+    <link rel=&quot;apple-touch-icon&quot; type=&quot;image/png&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png&quot; />
+
+    <meta name=&quot;apple-mobile-web-app-title&quot; content=&quot;CodePen&quot;>
+
+    <link rel=&quot;icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico&quot; />
+
+    <link rel=&quot;mask-icon&quot; type=&quot;image/x-icon&quot; href=&quot;https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg&quot; color=&quot;#111&quot; />
+
+
+
+  
+    <script src=&quot;https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-f07739098a39bd4e74ddd974652dac904146f33fdc1ecab356e8c809a05faccb.js&quot;></script>
+
+
+  <title>Lightweight Water Distortion Effect</title>
+
+    <link rel=&quot;canonical&quot; href=&quot;https://codepen.io/ksenia-k/pen/RwXVMMY&quot;>
+  
+  
+  
+  
+<style>
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.lil-gui {
+    --width: 400px;
+    --widget-height: 20px;
+    font-size: 15px;
+    --input-font-size: 15px;
+    --padding: 10px;
+    --spacing: 10px;
+    --slider-knob-width: 5px;
+    --background-color: rgba(5, 0, 15, .9);
+    --widget-color: rgba(255, 255, 255, .3);
+    --focus-color: rgba(255, 255, 255, .4);
+    --hover-color: rgba(255, 255, 255, .5);
+    --font-family: monospace;
+    z-index: 1;
+}
+</style>
+
+  <script>
+  window.console = window.console || function(t) {};
+</script>
+
+  
+  
+</head>
+
+<body translate=&quot;no&quot;>
+  <input id=&quot;image-selector-input&quot; style=&quot;visibility:hidden;&quot; type=&quot;file&quot;>
+
+<canvas></canvas>
+
+<script type=&quot;x-shader/x-fragment&quot; id=&quot;vertShader&quot;>
+    precision mediump float;
+
+    varying vec2 vUv;
+    attribute vec2 a_position;
+
+    void main() {
+        vUv = .5 * (a_position + 1.);
+        gl_Position = vec4(a_position, 0.0, 1.0);
+    }
+</script>
+
+<script type=&quot;x-shader/x-fragment&quot; id=&quot;fragShader&quot;>
+    precision mediump float;
+
+    varying vec2 vUv;
+    uniform sampler2D u_image_texture;
+    uniform float u_time;
+    uniform float u_ratio;
+    uniform float u_img_ratio;
+    uniform float u_blueish;
+    uniform float u_scale;
+    uniform float u_illumination;
+    uniform float u_surface_distortion;
+    uniform float u_water_distortion;
+
+    #define TWO_PI 6.28318530718
+    #define PI 3.14159265358979323846
+
+    vec3 mod289(vec3 x) { return x - floor(x * (1. / 289.)) * 289.; }
+    vec2 mod289(vec2 x) { return x - floor(x * (1. / 289.)) * 289.; }
+    vec3 permute(vec3 x) { return mod289(((x*34.)+1.)*x); }
+    float snoise(vec2 v) {
+        const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
+        vec2 i = floor(v + dot(v, C.yy));
+        vec2 x0 = v - i + dot(i, C.xx);
+        vec2 i1;
+        i1 = (x0.x > x0.y) ? vec2(1., 0.) : vec2(0., 1.);
+        vec4 x12 = x0.xyxy + C.xxzz;
+        x12.xy -= i1;
+        i = mod289(i);
+        vec3 p = permute(permute(i.y + vec3(0., i1.y, 1.)) + i.x + vec3(0., i1.x, 1.));
+        vec3 m = max(0.5 - vec3(dot(x0, x0), dot(x12.xy, x12.xy), dot(x12.zw, x12.zw)), 0.);
+        m = m*m;
+        m = m*m;
+        vec3 x = 2. * fract(p * C.www) - 1.;
+        vec3 h = abs(x) - 0.5;
+        vec3 ox = floor(x + 0.5);
+        vec3 a0 = x - ox;
+        m *= 1.79284291400159 - 0.85373472095314 * (a0*a0 + h*h);
+        vec3 g;
+        g.x = a0.x * x0.x + h.x * x0.y;
+        g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+        return 130. * dot(m, g);
+    }
+
+
+    mat2 rotate2D(float r) {
+        return mat2(cos(r), sin(r), -sin(r), cos(r));
+    }
+
+    float surface_noise(vec2 uv, float t, float scale) {
+        vec2 n = vec2(.1);
+        vec2 N = vec2(.1);
+        mat2 m = rotate2D(.5);
+        for (int j = 0; j < 10; j++) {
+            uv *= m;
+            n *= m;
+            vec2 q = uv * scale + float(j) + n + (.5 + .5 * float(j)) * (mod(float(j), 2.) - 1.) * t;
+            n += sin(q);
+            N += cos(q) / scale;
+            scale *= 1.2;
+        }
+        return (N.x + N.y + .1);
+    }
+
+    void main() {
+        vec2 uv = vUv;
+        uv.y = 1. - uv.y;
+        uv.x *= u_ratio;
+
+        float t = .002 * u_time;
+        vec3 color = vec3(0.);
+        float opacity = 0.;
+
+        float outer_noise = snoise((.3 + .1 * sin(t)) * uv + vec2(0., .2 * t));
+        vec2 surface_noise_uv = 2. * uv + (outer_noise * .2);
+
+        float surface_noise = surface_noise(surface_noise_uv, t, u_scale);
+        surface_noise *= pow(uv.y, .3);
+        surface_noise = pow(surface_noise, 2.);
+
+        vec2 img_uv = vUv;
+        img_uv -= .5;
+        if (u_ratio > u_img_ratio) {
+            img_uv.x = img_uv.x * u_ratio / u_img_ratio;
+        } else {
+            img_uv.y = img_uv.y * u_img_ratio / u_ratio;
+        }
+        float scale_factor = 1.4;
+        img_uv *= scale_factor;
+        img_uv += .5;
+        img_uv.y = 1. - img_uv.y;
+
+        img_uv += (u_water_distortion * outer_noise);
+        img_uv += (u_surface_distortion * surface_noise);
+
+        vec4 img = texture2D(u_image_texture, img_uv);
+        img *= (1. + u_illumination * surface_noise);
+
+        color += img.rgb;
+        color += u_illumination * vec3(1. - u_blueish, 1., 1.) * surface_noise;
+        opacity += img.a;
+
+        float edge_width = .02;
+        float edge_alpha = smoothstep(0., edge_width, img_uv.x) * smoothstep(1., 1. - edge_width, img_uv.x);
+        edge_alpha *= smoothstep(0., edge_width, img_uv.y) * smoothstep(1., 1. - edge_width, img_uv.y);
+        color *= edge_alpha;
+        opacity *= edge_alpha;
+
+        gl_FragColor = vec4(color, opacity);
+    }
+</script>
+  
+    <script id=&quot;rendered-js&quot; type=&quot;module&quot;>
+import GUI from &quot;https://cdn.jsdelivr.net/npm/lil-gui@0.18.2/+esm&quot;;
+
+const canvasEl = document.querySelector(&quot;canvas&quot;);
+const imgInput = document.querySelector(&quot;#image-selector-input&quot;);
+const devicePixelRatio = Math.min(window.devicePixelRatio, 2);
+
+const params = {
+  blueish: .6,
+  scale: 7,
+  illumination: .15,
+  surfaceDistortion: .07,
+  waterDistortion: .03,
+  loadMyImage: () => {
+    imgInput.click();
+  } };
+
+
+imgInput.onchange = () => {
+  const [file] = imgInput.files;
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      loadImage(e.target.result);
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
+
+let image, uniforms;
+const gl = initShader();
+updateUniforms();
+loadImage(&quot;https://ksenia-k.com/img/codepen/for-water-distortion-demo-2.jpg&quot;);
+createControls();
+render();
+window.addEventListener(&quot;resize&quot;, resizeCanvas);
+
+
+function initShader() {
+  const vsSource = document.getElementById(&quot;vertShader&quot;).innerHTML;
+  const fsSource = document.getElementById(&quot;fragShader&quot;).innerHTML;
+
+  const gl = canvasEl.getContext(&quot;webgl&quot;) || canvasEl.getContext(&quot;experimental-webgl&quot;);
+
+  if (!gl) {
+    alert(&quot;WebGL is not supported by your browser.&quot;);
+  }
+
+  function createShader(gl, sourceCode, type) {
+    const shader = gl.createShader(type);
+    gl.shaderSource(shader, sourceCode);
+    gl.compileShader(shader);
+
+    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+      console.error(&quot;An error occurred compiling the shaders: &quot; + gl.getShaderInfoLog(shader));
+      gl.deleteShader(shader);
+      return null;
+    }
+
+    return shader;
+  }
+
+  const vertexShader = createShader(gl, vsSource, gl.VERTEX_SHADER);
+  const fragmentShader = createShader(gl, fsSource, gl.FRAGMENT_SHADER);
+
+  function createShaderProgram(gl, vertexShader, fragmentShader) {
+    const program = gl.createProgram();
+    gl.attachShader(program, vertexShader);
+    gl.attachShader(program, fragmentShader);
+    gl.linkProgram(program);
+
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      console.error(&quot;Unable to initialize the shader program: &quot; + gl.getProgramInfoLog(program));
+      return null;
+    }
+
+    return program;
+  }
+
+  const shaderProgram = createShaderProgram(gl, vertexShader, fragmentShader);
+  uniforms = getUniforms(shaderProgram);
+
+  function getUniforms(program) {
+    let uniforms = [];
+    let uniformCount = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
+    for (let i = 0; i < uniformCount; i++) {
+      let uniformName = gl.getActiveUniform(program, i).name;
+      uniforms[uniformName] = gl.getUniformLocation(program, uniformName);
+    }
+    return uniforms;
+  }
+
+  const vertices = new Float32Array([-1., -1., 1., -1., -1., 1., 1., 1.]);
+
+  const vertexBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+
+  gl.useProgram(shaderProgram);
+
+  const positionLocation = gl.getAttribLocation(shaderProgram, &quot;a_position&quot;);
+  gl.enableVertexAttribArray(positionLocation);
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+  gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+  return gl;
+}
+
+function updateUniforms() {
+  gl.uniform1f(uniforms.u_blueish, params.blueish);
+  gl.uniform1f(uniforms.u_scale, params.scale);
+  gl.uniform1f(uniforms.u_illumination, params.illumination);
+  gl.uniform1f(uniforms.u_surface_distortion, params.surfaceDistortion);
+  gl.uniform1f(uniforms.u_water_distortion, params.waterDistortion);
+
+}
+
+function loadImage(src) {
+  image = new Image();
+  image.crossOrigin = &quot;anonymous&quot;;
+  image.src = src;
+  image.onload = () => {
+    const imageTexture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, imageTexture);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+    gl.uniform1i(uniforms.u_image_texture, 0);
+    resizeCanvas();
+  };
+}
+
+function render() {
+  const currentTime = performance.now();
+  gl.uniform1f(uniforms.u_time, currentTime);
+  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  requestAnimationFrame(render);
+}
+
+function resizeCanvas() {
+  const imgRatio = image.naturalWidth / image.naturalHeight;
+  canvasEl.width = window.innerWidth * devicePixelRatio;
+  canvasEl.height = window.innerHeight * devicePixelRatio;
+  gl.viewport(0, 0, canvasEl.width, canvasEl.height);
+  gl.uniform1f(uniforms.u_ratio, canvasEl.width / canvasEl.height);
+  gl.uniform1f(uniforms.u_img_ratio, imgRatio);
+}
+
+function createControls() {
+  const gui = new GUI();
+  gui.close();
+
+  gui.
+  add(params, &quot;loadMyImage&quot;).
+  name(&quot;load image&quot;);
+
+  const paramsFolder = gui.addFolder(&quot;shader params&quot;);
+  // paramsFolder.close();
+
+  paramsFolder.
+  add(params, &quot;blueish&quot;, 0, .8).
+  onChange(updateUniforms);
+  paramsFolder.
+  add(params, &quot;scale&quot;, 5, 12).
+  onChange(updateUniforms);
+  paramsFolder.
+  add(params, &quot;illumination&quot;, 0, 1).
+  onChange(updateUniforms);
+  paramsFolder.
+  add(params, &quot;surfaceDistortion&quot;, 0, .12).
+  onChange(updateUniforms).
+  name(&quot;surface distortion&quot;);
+  paramsFolder.
+  add(params, &quot;waterDistortion&quot;, 0, .08).
+  onChange(updateUniforms).
+  name(&quot;water distortion&quot;);
+}
+//# sourceURL=pen.js
+  </script>
+
+  
+</body>
+
+</html>
+"
+      sandbox="allow-downloads allow-forms allow-modals allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-same-origin allow-scripts allow-top-navigation-by-user-activation" allow="accelerometer *; ambient-light-sensor *; camera *; display-capture *; encrypted-media *; geolocation *; gyroscope *; microphone *; midi *; payment *; serial *; vr *; web-share *; xr-spatial-tracking *" allowTransparency="true"
+      allowpaymentrequest="true" allowfullscreen="true" class="result-iframe">
+      </iframe>
+  </div>
+
+</body>
+
+</html>
