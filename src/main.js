@@ -71,8 +71,8 @@ async function resolveIdentity() {
       'GET'
     );
     const profile = response?.data ?? null;
-    const name = debugName || profile?.user_name;
-    if (!name) throw new Error('AlterU profile did not return user_name');
+    const name = debugName || profile?.name || profile?.user_name;
+    if (!name) throw new Error('AlterU profile did not return name');
     return {
       name,
       image: debugAvatar || profile?.head_url || './alteru-default-avatar.jpg'
