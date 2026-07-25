@@ -13,13 +13,16 @@
 - `src/main.js`：平台身份解析、WebGL 初始化、触控状态和渲染循环。
 - `src/shaders.js`：原作顶点/片元 shader 与产品触点波纹扩展。
 - `public/upstream-original.jpg`：`?baseline=1` 的原作内容图。
-- `public/publisher-avatar.png`：玩家头像缺失或加载失败时的发布者回退。
+- `public/alteru-default-avatar.jpg`：玩家头像缺失、加载失败或平台外预览时的
+  AlterU 默认头像，使用用户在 2026-07-25 提供的 1280×1280 原图。
 - `upstream/`：固定 CodePen 快照与原作者署名证据。
 - `_qa/ui/`：390×844、320×568 与原作基线截图。
 
 ## 3. 核心模块
 
-身份解析顺序为 URL 调试参数、Aigram `AW.PROFILE.GET`、发布者回退；头像网络加载
+身份解析顺序为 URL 调试参数、Aigram 当前用户资料接口
+`/note/telegram/user/get/info/by/telegram_id`、平台外 `AlterU` 品牌文字；平台内
+`user_name` 为必需字段，头像缺失时只回退图片。头像网络加载
 失败也会二次降级。渲染器使用一个全屏 `TRIANGLE_STRIP`，每帧只更新时间、触点
 位置和触点强度。Pointer Events 维护按下、拖动、松手，松手后的强度插值同时驱动
 水面回落和结算条件。页面隐藏时停止 RAF，恢复可见时重启。界面文字根据
@@ -30,6 +33,6 @@
 - 改水体参数与触点手感：`src/main.js` 的 `params` 与 `render()`。
 - 改原作水面或触点波纹：`src/shaders.js`。
 - 改身份来源：`resolveIdentity()`。
-- 换发布者回退头像：覆盖 `public/publisher-avatar.png`。
+- 换 AlterU 默认头像：覆盖 `public/alteru-default-avatar.jpg`。
 - 改标题、排版或结算动效：`index.html` 与 `src/style.css`。
 - 加存档/排行榜：在结算条件触发处接入 `useGameSave` 或排行榜 API；当前玩法不计分。

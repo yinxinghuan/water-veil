@@ -65,21 +65,23 @@ async function resolveIdentity() {
   if (baseline) return { name: 'ORIGINAL', image: './upstream-original.jpg' };
   const debugAvatar = query.get('avatar_url');
   const debugName = query.get('user_name');
-  if (debugAvatar || debugName) {
-    return { name: debugName || 'YINXINGHUAN', image: debugAvatar || './publisher-avatar.png' };
-  }
   if (isInAigram && telegramId) {
-    try {
-      const response = await callAigramAPI('AW.PROFILE.GET', { telegram_id: telegramId });
-      const profile = response?.data ?? response;
-      const name = profile?.user_name || profile?.username || profile?.name;
-      const avatar = profile?.head_url || profile?.avatar_url;
-      if (avatar || name) return { name: name || 'YINXINGHUAN', image: avatar || './publisher-avatar.png' };
-    } catch (error) {
-      console.warn('Profile unavailable, using publisher fallback.', error);
-    }
+    const response = await callAigramAPI(
+      `/note/telegram/user/get/info/by/telegram_id?telegram_id=${encodeURIComponent(telegramId)}`,
+      'GET'
+    );
+    const profile = response?.data ?? null;
+    const name = debugName || profile?.user_name;
+    if (!name) throw new Error('AlterU profile did not return user_name');
+    return {
+      name,
+      image: debugAvatar || profile?.head_url || './alteru-default-avatar.jpg'
+    };
   }
-  return { name: 'YINXINGHUAN', image: './publisher-avatar.png' };
+  return {
+    name: debugName || 'AlterU',
+    image: debugAvatar || './alteru-default-avatar.jpg'
+  };
 }
 
 function compile(source, type) {
@@ -200,9 +202,9 @@ async function start() {
     try {
       image = await loadImage(identity.image);
     } catch (identityImageError) {
-      if (baseline || identity.image.endsWith('publisher-avatar.png')) throw identityImageError;
-      console.warn('Player avatar unavailable, using publisher fallback.', identityImageError);
-      image = await loadImage('./publisher-avatar.png');
+      if (baseline || identity.image.endsWith('alteru-default-avatar.jpg')) throw identityImageError;
+      console.warn('Player avatar unavailable, using AlterU default avatar.', identityImageError);
+      image = await loadImage('./alteru-default-avatar.jpg');
     }
     uploadTexture();
     resize();
